@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <title>upload | Echo Blog System</title>
+  <style>
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: Canvas;
+      color: CanvasText;
+      color-scheme: dark light;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    a {
+      color: CanvasText;
+      text-decoration: none;
+    }
+
+    #form {
+      width: 100%;
+      max-width: 250px;
+      margin: 100px auto 0;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 8px;
+      min-width: 100px;
+    }
+
+    input {
+      box-sizing: border-box;
+      padding: 10px 8px;
+      width: 100%;
+      font-size: 16px;
+      outline-color: #369068;
+      border: 1px solid #369068;
+      border-radius: 5px;
+    }
+
+    #msg {
+      margin: 15px 0;
+    }
+
+    #submit {
+      display: block;
+      max-width: 125px;
+      line-height: .2em;
+      text-align: center;
+      margin: 20px auto;
+      color: #369068;
+      border: 1px solid #369068;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="form"><img id="imgShow" src="" alt="" srcset=""><label for="imgName">重命名 :</label><input id="imgName"
+      value="" type="text"><label for="imgAlbum">相册名 :</label><input id="imgAlbum" value="daily" type="text"><label
+      for="imgFile">文件 :</label><input id="imgFile" type="file" onchange="getFile()"><label for="markdown"
+      onclick="">MarkDown :</label><input id="markdown" type="text" onfocus="copyFn()">
+    <div id="msg"></div><span href="" id="submit" onclick="submit()">
+      <h4>😎 Submit</h4>
+    </span>
+  </div>
+  <script>
+    function $(id) {
+      return document.getElementById(id)
+    }
+    function getDate() {
+      let date = new Date();
+      let year = date.getFullYear().toString();
+      let mon = date.getMonth() + 1;
+      mon < 10 ? mon = "0" + mon : mon;
+      let day = date.getDate();
+      return year + mon + day;
+    };
+    $("imgName").value = getDate();
+    let img_data = "";
+    function getFile() {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        img_data = e.target.result;
+      };
+      reader.readAsDataURL($("imgFile").files[0]);
+    };
+    async function submit() {
+      const album = $("imgAlbum").value;
+      const name = $("imgName").value;
+      $("markdown").value = `![${name}](https://api.lorre.top/img/?name=${name}.jpg)`;
+      let body = JSON.stringify({
+        name: name || getDate(),
+        album,
+        desc: "图片",
+        img_data,
+        token: localStorage.getItem('echoToken') || ""
+      });
+      console.log((body));
+      try {
+        const res = await fetch("/img", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body
+        });
+        const result = await res.json();
+        console.log(result);
+        if (result.msg == "success") {
+          $("imgShow").src = "/img/?name=" + name + ".jpg";
+          msg.innerText = "🤩 Create success.";
+        } else {
+          msg.innerText = "😮‍💨 Create failed.";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    function copyFn() {
+      $("markdown").select();
+      document.execCommand("copy");
+    }; 
+  </script>
+</body>
+
+</html>

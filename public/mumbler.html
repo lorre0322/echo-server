@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <title>Mumbler | Echo Blog System</title>
+  <style>
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: Canvas;
+      color: CanvasText;
+      color-scheme: dark light;
+    }
+
+    #form {
+      width: 100%;
+      max-width: 250px;
+      margin: 100px auto 0;
+    }
+
+    #title {
+      text-align: center;
+      color: #369068;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 8px;
+      min-width: 100px;
+    }
+
+    textarea,
+    input {
+      box-sizing: border-box;
+      padding: 10px 8px;
+      width: 100%;
+      font-size: 16px;
+      outline-color: #369068;
+      border: 1px solid #369068;
+      border-radius: 5px;
+    }
+
+    #msg {
+      margin: 15px 0;
+      word-wrap: break-word;
+    }
+
+    #submit {
+      display: block;
+      max-width: 125px;
+      line-height: .2em;
+      text-align: center;
+      margin: 20px auto;
+      color: #369068;
+      border: 1px solid #369068;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="form">
+    <h2 id="title">Add a mumbler</h2>
+    <label for="mumbler-id">mumbler id :</label>
+    <input id="mumbler-id" placeholder="mumbler-id" type="text"><br>
+    <label for="date">date :</label>
+    <input id="date" placeholder="date" type="text"><br>
+    <label for="tag">tag :</label>
+    <input id="tag" placeholder="tag" type="text" value="daily"><br>
+    <label for="mumbler">Mumbler :</label>
+    <textarea name="mumbler" id="mumbler" rows="6">## 这是一条`说说`</textarea>
+    <div id="msg"></div>
+    <span href="" id="submit" onclick="FormSubmit()">
+      <h4>😎<span id="login-user">Submit</span></h4>
+    </span>
+  </div>
+  <script>
+    function $(id) {
+      return document.getElementById(id)
+    }
+    // (async function () {
+    //   const res = await fetch("/mumbler/list/1", {
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   });
+    //   const result = await res.json();
+    //   $("msg").innerText = JSON.stringify(result)
+    // })();
+
+    $("date").value = Date.parse(new Date()) / 1000;
+    async function FormSubmit() {
+      const id = $("mumbler-id").value,
+        date = $("date").value,
+        tag = $("tag").value,
+        body = $("mumbler").value,
+        token = localStorage.getItem('echoToken') || "";
+      const params = JSON.stringify({ id, date, tag, body, token });
+      console.log(params);
+      const res = await fetch("/mumbler", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: params
+      });
+      const result = await res.json();
+      $("msg").innerText = JSON.stringify(result);
+    };
+  </script>
+</body>
+
+</html>

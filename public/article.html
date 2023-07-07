@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <title>article | Echo Blog System</title>
+  <style>
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: Canvas;
+      color: CanvasText;
+      color-scheme: dark light;
+    }
+
+    #form {
+      width: 100%;
+      max-width: 250px;
+      margin: 100px auto 0;
+    }
+
+    #title {
+      text-align: center;
+      color: #369068;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 8px;
+      min-width: 100px;
+    }
+
+    textarea,
+    input {
+      box-sizing: border-box;
+      padding: 10px 8px;
+      width: 100%;
+      font-size: 16px;
+      outline-color: #369068;
+      border: 1px solid #369068;
+      border-radius: 5px;
+    }
+
+    #msg {
+      margin: 15px 0;
+      word-wrap: break-word;
+    }
+
+    #submit {
+      display: block;
+      max-width: 125px;
+      line-height: .2em;
+      text-align: center;
+      margin: 20px auto;
+      color: #369068;
+      border: 1px solid #369068;
+      border-radius: 8px;
+    }
+
+    #status {
+      margin: 20px 0;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      vertical-align: middle;
+      margin: 0 15px 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="form">
+    <h2 id="title">Add a article</h2>
+    <label for="article-id">article id :</label>
+    <input id="article-id" placeholder="article-id" type="text"><br>
+    <label for="article-title">article title :</label>
+    <input id="article-title" placeholder="article-title" type="text" value="文章"><br>
+    <label for="date">date :</label>
+    <input id="date" placeholder="date" type="text"><br>
+    <label for="category">category :</label>
+    <input id="category" placeholder="category" type="text" value="essay"><br>
+    <div id="status">
+      hidden: <input id="hidden" type="checkbox">
+      Top: <input id="top" type="checkbox">
+    </div>
+    <label for="article">article :</label>
+    <textarea name="article" id="article" rows="6">**这是一篇文章**</textarea>
+    <div id="msg"></div>
+    <span href="" id="submit" onclick="FormSubmit()">
+      <h4>😎<span id="login-user">Submit</span></h4>
+    </span>
+  </div>
+  <script>
+    function $(id) {
+      return document.getElementById(id)
+    }
+    // (async function () {
+    //   const body = JSON.stringify({
+    //     type: "get_article",
+    //     data: {
+    //       // title: "文章"
+    //       category: "essay",
+    //     }
+    //   });
+    //   const res = await fetch("./", { method: 'POST', body });
+    //   const result = await res.json();
+    //   $("msg").innerText = JSON.stringify(result.data)
+    // })();
+    $("date").value = Date.parse(new Date());
+    async function FormSubmit() {
+      const id = $("article-id").value,
+        token = localStorage.getItem('echoToken') || "",
+        title = $("article-title").value,
+        date = $("date").value,
+        category = $("category").value,
+        hide = $("hidden").checked,
+        top = $("top").checked,
+        body = $("article").value;
+      const params = JSON.stringify({
+        id, token, title, date, category, hide, top, body
+      });
+      console.log(params);
+      const res = await fetch("/article", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: params
+      });
+      const result = await res.json();
+      $("msg").innerText = JSON.stringify(result)
+    };
+  </script>
+</body>
+
+</html>

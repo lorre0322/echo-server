@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <title>Login | Echo Blog System</title>
+  <style>
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: Canvas;
+      color: CanvasText;
+      color-scheme: dark light;
+    }
+
+    #form {
+      width: 100%;
+      max-width: 250px;
+      margin: 100px auto 0;
+    }
+
+    #title {
+      text-align: center;
+      color: #369068;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 8px;
+      min-width: 100px;
+    }
+
+    input {
+      box-sizing: border-box;
+      padding: 10px 8px;
+      width: 100%;
+      font-size: 16px;
+      outline-color: #369068;
+      border: 1px solid #369068;
+      border-radius: 5px;
+    }
+
+    #msg {
+      margin: 15px 0;
+    }
+
+    #submit {
+      display: block;
+      max-width: 125px;
+      line-height: .2em;
+      text-align: center;
+      margin: 20px auto;
+      color: #369068;
+      border: 1px solid #369068;
+      border-radius: 8px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="form">
+    <h2 id="title">login your admin</h2>
+    <label for="username">username :</label>
+    <input id="username" placeholder="username" type="text" value="lorre"><br>
+    <label for="username">password :</label>
+    <input id="password" placeholder="password" type="password" value="wasd33259181"><br>
+    <div id="msg"></div>
+    <span href="" id="submit" onclick="FormSubmit()">
+      <h4>😎<span id="login-user">Submit</span></h4>
+    </span>
+  </div>
+
+  <script>
+
+    function $(id) {
+      return document.getElementById(id)
+    }
+    let token = localStorage.getItem('echoToken') || "";
+    let msg = $("msg")
+    if (token) {
+      login()
+    }
+    async function login() {
+      let username = $("username").value;
+      let password = $("password").value;
+      const body = JSON.stringify({ username, password, token });
+      console.log(body);
+      const res = await fetch("/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body
+      });
+      const result = await res.json();
+      if ("token" in result) {
+        localStorage.setItem('echoToken', result.token);
+        msg.innerText = "🥰 登陆成功～！"
+      }
+      console.log(result);
+    }
+    function logOut() {
+      localStorage.clear();
+      msg.innerText = "成功登出！"
+      setTimeout(function () {
+        location.reload()
+      }, 500)
+    }
+
+    async function FormSubmit() {
+      let token = localStorage.getItem('echoToken') || "";
+      if (token) {
+        logOut()
+      } else {
+        login()
+      }
+    }
+
+  </script>
+</body>
+
+</html>

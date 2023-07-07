@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <title>Echo Blog System</title>
+  <style>
+    * {
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background-color: Canvas;
+      color: CanvasText;
+      color-scheme: dark light;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    a {
+      color: CanvasText;
+      text-decoration: none;
+    }
+
+    #wrapper {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+      margin: 100px auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #logo {
+      width: 80px;
+      height: 80px;
+      margin-inline: auto;
+      z-index: 10;
+    }
+
+    #start {
+      color: #369068;
+      text-decoration: none;
+      display: inline-block;
+      padding: 0 18px;
+      margin: 15px auto;
+      line-height: 1.5em;
+      border: 2px solid #369068;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    #menu {
+      width: 100vw;
+      height: 100vh;
+      background: Canvas;
+      visibility: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 5;
+    }
+
+    #menu ul {
+      width: 100%;
+      max-width: 500px;
+      margin: 200px auto;
+      padding: 5em;
+      box-sizing: border-box;
+      list-style: none;
+    }
+
+    #menu ul li a {
+      display: block;
+      padding: 10px;
+      color: #369068;
+    }
+
+    body.open #menu {
+      visibility: inherit;
+
+    }
+
+    .locate {
+      width: 100%;
+      max-width: 500px;
+      position: fixed;
+      bottom: 100px;
+      right: 0;
+      left: 0;
+      margin-inline: auto;
+      z-index: 10;
+    }
+
+    #open-menu {
+      position: absolute;
+      font-size: 25px;
+      width: 25px;
+      height: 25px;
+      line-height: 25px;
+      font-weight: 600;
+      right: 20px;
+      margin: 0;
+      padding: .2em;
+      border-radius: 50%;
+      color: #369068;
+      border: 1px solid #369068;
+      transform: rotate(0);
+      transition: all .5s;
+    }
+
+    body.open #open-menu {
+      transform: rotateZ(135deg)
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="menu">
+      <ul>
+        <li><a href="/login.html">Login</a></li>
+        <li><a href="/mumbler.html">Mumbler</a></li>
+        <li><a href="/article.html">Article</a></li>
+        <li><a href="/upload.html">Upload</a></li>
+      </ul>
+    </div>
+    <div class="locate">
+      <div id="open-menu" onclick="openMenu()">
+        <svg viewBox="0 0 48 48">
+          <path fill="none" stroke="#369068" stroke-width="2px" stroke-linecap="round" stroke-linejoin="round"
+            d="M24.48 43.5a5.788 5.788 0 0 1-3.442-1.138c-2.394-1.757-2.956-5.116-1.48-7.692l2.275-3.975a.616.616 0 0 0-.534-.922H15.87c-1.58 0-3.15-.54-4.273-1.653a5.794 5.794 0 0 1-.968-7.011l7.74-13.515c1.576-2.751 5.069-3.936 7.866-2.444a5.788 5.788 0 0 1 2.301 7.985l-2.37 4.14a.616.616 0 0 0 .534.922h5.431c1.58 0 3.15.541 4.271 1.654a5.795 5.795 0 0 1 .967 7.01l-7.862 13.727A5.785 5.785 0 0 1 24.48 43.5Z" />
+        </svg>
+      </div>
+    </div>
+    <svg id="logo" width="32" height="32" viewBox="0 0 48 48">
+      <path fill="none" stroke="#369068" stroke-width="2px" stroke-linecap="round" stroke-linejoin="round"
+        d="M24.48 43.5a5.788 5.788 0 0 1-3.442-1.138c-2.394-1.757-2.956-5.116-1.48-7.692l2.275-3.975a.616.616 0 0 0-.534-.922H15.87c-1.58 0-3.15-.54-4.273-1.653a5.794 5.794 0 0 1-.968-7.011l7.74-13.515c1.576-2.751 5.069-3.936 7.866-2.444a5.788 5.788 0 0 1 2.301 7.985l-2.37 4.14a.616.616 0 0 0 .534.922h5.431c1.58 0 3.15.541 4.271 1.654a5.795 5.795 0 0 1 .967 7.01l-7.862 13.727A5.785 5.785 0 0 1 24.48 43.5Z" />
+    </svg>
+    <div id="meta">
+      <h1 class="title">Echo Blog System</h1>
+      <p class="subtitle">A simple and save system power by node and mongodb.</p>
+      <a id="start" href="/init.html">
+        <h2>🥳 start</h2>
+      </a>
+    </div>
+  </div>
+  <script>
+    let state = false
+    function openMenu() {
+      state = !state
+      const body = document.body.classList
+      state ? body.add("open") : body.remove("open")
+    }
+  </script>
+</body>
+
+</html>
